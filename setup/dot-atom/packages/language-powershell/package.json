@@ -1,0 +1,24 @@
+{
+  "name": "language-powershell",
+  "version": "5.0.0",
+  "description": "PowerShell language support for Atom",
+  "keywords": [
+    "powershell",
+    "microsoft",
+    "windows",
+    "grammar"
+  ],
+  "repository": "https://github.com/jugglingnutcase/language-powershell",
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "cson": "3.0.2",
+    "plist": "2.0.1"
+  },
+  "scripts": {
+    "convert": "node scripts/convert-grammar.js"
+  }
+}

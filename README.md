@@ -1,3 +1,78 @@
+# This fork: Atom 1.60.0 + my setup, in one place
+
+Atom was archived by GitHub on 2022-12-15 and its package registry (atom.io,
+`apm`) is gone. I still use it. This fork of `atom/atom` keeps everything
+needed to put my exact editor back on a fresh machine:
+
+| What | Where |
+|---|---|
+| The program | Release [`v1.60.0-victus`](../../releases/tag/v1.60.0-victus) → `AtomSetup-x64.exe` (the official 1.60.0 installer, re-hosted here because forks do not inherit upstream releases) |
+| My `~/.atom` | [`setup/dot-atom/`](setup/dot-atom) — config, keymap, snippets, styles, init script, and the installed packages with their source |
+| Upstream source | Everything else in this repo, unchanged, from `atom/atom` `master` at `1c3bd35` |
+
+Branch `custom` is the default. `master` tracks upstream and will never move
+again.
+
+## Packages (vendored, no registry needed)
+
+| Package | Version | Origin | Notes |
+|---|---|---|---|
+| `language-ziran` | 0.6.3 | [ziranlang/ziran-vscode](https://github.com/ziranlang/ziran-vscode) | Ziran grammar ported from the VS Code extension. The one that matters. |
+| `language-lua` | 0.9.11 | [FireZenk/language-lua](https://github.com/FireZenk/language-lua) | |
+| `language-powershell` | 5.0.0 | [jugglingnutcase/language-powershell](https://github.com/jugglingnutcase/language-powershell) | |
+| `language-batchfile` | 0.7.7 | [mmims/language-batchfile](https://github.com/mmims/language-batchfile) | Folder is named `language-batchfile-master` (installed from a zip) |
+
+All four are pure grammar packages: no `node_modules`, no native code, so
+they are committed whole and work on any Atom 1.x.
+
+## Config
+
+`config.cson` is small on purpose: `whitespace` package disabled, telemetry
+off, font size 17, welcome screen off. `keymap.cson`, `snippets.cson`,
+`styles.less` and `init.coffee` are still Atom's blank templates — kept so
+the folder is a complete snapshot, not a partial one.
+
+## Restore on a fresh Windows machine
+
+1. Download `AtomSetup-x64.exe` from the
+   [`v1.60.0-victus` release](../../releases/tag/v1.60.0-victus) and run it.
+   It installs to `%LOCALAPPDATA%\atom` and puts `atom` on the user PATH.
+2. Start Atom once so it creates `%USERPROFILE%\.atom`, then close it.
+3. Copy the contents of `setup/dot-atom/` over `%USERPROFILE%\.atom\`:
+   ```powershell
+   robocopy .\setup\dot-atom "$env:USERPROFILE\.atom" /E
+   ```
+4. Start Atom. Grammars load from `.atom/packages`; nothing is fetched.
+
+Do **not** run `apm install` — the registry it talks to no longer exists.
+Atom's self-updater is dead for the same reason, so this install will never
+change under you.
+
+## Keeping the snapshot current
+
+After changing config or adding a package, re-copy and commit:
+
+```powershell
+robocopy "$env:USERPROFILE\.atom" .\setup\dot-atom /E /XD node_modules .git blob-store compile-cache storage recovery .apm .node-gyp .npm
+git add setup && git commit -m "setup: update .atom snapshot" && git push
+```
+
+Caches (`compile-cache`, `storage`, `blob-store`, `.apm`) are deliberately
+excluded; Atom rebuilds them.
+
+## If 1.60.0 ever stops running
+
+[Pulsar](https://github.com/pulsar-edit/pulsar) is the community
+continuation of Atom with a modernised build. It reads the same `.atom`
+layout, so `setup/dot-atom/` restores into it unchanged. Building Atom 1.60
+itself from this source on a current machine is not realistic (Electron 9,
+Node 12, Python 2 era toolchain); this fork exists to preserve the binary and
+the setup, not to rebuild it.
+
+---
+
+# Original README
+
 # Atom
 
 [![Build status](https://dev.azure.com/github/Atom/_apis/build/status/Atom%20Production%20Branches?branchName=master)](https://dev.azure.com/github/Atom/_build/latest?definitionId=32&branchName=master)

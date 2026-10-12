@@ -1,0 +1,12 @@
+"*":
+  core:
+    disabledPackages: [
+      "whitespace"
+    ]
+    telemetryConsent: "no"
+  editor:
+    fontSize: 17
+  "exception-reporting":
+    userId: "6fd32eda-702c-433d-b77b-f8c59fc8ce26"
+  welcome:
+    showOnStartup: false
